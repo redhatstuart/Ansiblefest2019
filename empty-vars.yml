@@ -1,0 +1,8 @@
+resource_group: ansiblefestrg
+location: eastus
+client_id: xxx
+secret: xxx
+tenant_id: xx
+acr_name: afacr
+github_id: githubid
+github_token: token
