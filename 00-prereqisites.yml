@@ -9,5 +9,4 @@
     - name: Create an Azure Container Registry for Azure Function
       azure_rm_resourcegroup:
         name: "{{ resource_group }}"
-        location: eastus
-
+        location: "{{ location }}"
