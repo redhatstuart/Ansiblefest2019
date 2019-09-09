@@ -2,8 +2,20 @@
 - hosts: localhost
   vars_files:
     - vars.yml
-  roles:
-    - ./modules 
   tasks:
-    - name: Create simple container instance
+    - name: Create sample container group
       azure_rm_containerinstance:
+        resource_group: "{{ resource_group }}"
+        name: mycontainerinstance
+        os_type: linux
+        ip_address: public
+        containers:
+          - name: mycontainer
+            image: zikalino/helloworld
+            memory: 1.5
+            ports:
+              - 80
+      register: output
+
+    - debug:
+        var: output
