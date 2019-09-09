@@ -5,6 +5,10 @@
    - ./vars.yml
 
   tasks:
+    - name: Log into DockerHub
+      docker_login:
+        username: "{{ docker_username }}"
+        password: "{{ docker_password }}"
     - name: Build and push Docker image
       docker_image:
         build:
