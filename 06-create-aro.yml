@@ -8,7 +8,7 @@
     - name: Create/Update OpenShift Managed Cluster
       openshiftmanagedcluster:
         resource_group: "{{ resource_group }}"
-        name: myOpenShiftManagedCluster
+        name: "{{ aro_cluster_name }}"
         location: eastus
         open_shift_version: v3.11
         network_profile:
@@ -39,6 +39,10 @@
             - name: Azure AD
               provider:
                 kind: AADIdentityProvider
-                clientId: "{{ client_id }}"
-                secret: "{{ secret }}"
-                tenantId: "{{ tenant_id }}"
+                clientId: "{{ aro_client_id }}"
+                secret: "{{ aro_secret }}"
+                tenantId: "{{ aro_tenant_id }}"
+      register: output
+
+    - debug:
+        var: output
