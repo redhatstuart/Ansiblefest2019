@@ -45,4 +45,4 @@
       register: output
 
     - debug:
-        var: output
+        msg: "https://{{ output.properties.publicHostname }}"
