@@ -1,8 +1,14 @@
-resource_group: ansiblefestrg
+resource_group: myrg
 location: eastus
-client_id: xxx
-secret: xxx
-tenant_id: xx
-acr_name: afacr
-github_id: githubid
-github_token: token
+
+acr_name: myacr
+
+github_id: mygithubid
+github_token: mygithubtoken
+
+docker_username: mydockerid
+docker_password: mygithubtoken
+
+aro_client_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+aro_tenant_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+aro_secret: XxxxxXXxXxXxXxxxXXxxXXxxXXxXXXx=
