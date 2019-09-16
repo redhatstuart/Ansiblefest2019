@@ -2,43 +2,47 @@
 - hosts: localhost
   vars_files:
     - vars.yml
-  roles:
-    - ./modules 
   tasks:
-    - name: Create/Update OpenShift Managed Cluster
-      openshiftmanagedcluster:
-        resource_group: "{{ resource_group }}"
-        name: myOpenShiftManagedCluster
-        location: eastus
-        open_shift_version: v3.11
-        network_profile:
-          vnet_cidr: 10.0.0.0/8
-        router_profiles:
-          - name: default
-        master_pool_profile:
-          name: master
-          count: 3
-          vm_size: Standard_D4s_v3
-          subnet_cidr: 10.0.0.0/24
-          os_type: Linux
-        agent_pool_profiles:
-          - name: infra
-            count: 2
-            vm_size: Standard_D4s_v3
-            subnet_cidr: 10.0.0.0/24
-            os_type: Linux
-            role: infra
-          - name: compute
-            count: 4
-            vm_size: Standard_D4s_v3
-            subnet_cidr: 10.0.0.0/24
-            os_type: Linux
-            role: compute
-        auth_profile:
-          identity_providers:
-            - name: Azure AD
-              provider:
-                kind: AADIdentityProvider
-                clientId: "{{ client_id }}"
-                secret: "{{ secret }}"
-                tenantId: "{{ tenant_id }}"
+    - set_fact:
+         dns_prefix: "aks{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+         aks_name: "aks{{ resource_group | hash('md5') | truncate(7, True, '') }}"
+    - name: Create resource group
+      azure_rm_resourcegroup:
+         name: "{{ resource_group }}"
+         location: "{{ location }}"
+    - name: Create an AKS instance
+      azure_rm_aks:
+         name: "{{ aks_name }}"
+         resource_group: "{{ resource_group }}"
+         location: "{{ location }}"
+         dns_prefix: "{{ dns_prefix }}"
+         kubernetes_version: 1.12.7
+         service_principal:
+             client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+             client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+         linux_profile:
+             admin_username: azureuser
+             ssh_key: "{{ ssh_key }}"
+         agent_pool_profiles:
+             - name: default
+               count: 1
+               vm_size: Standard_DS1_v2
+      register: aks
+
+    - name: Save kubeconfig
+      copy:
+          content: "{{ aks.kube_config }}"
+          dest: ".config"
+
+    - name: Deploy an image to AKS
+      k8s_raw:
+          state: present
+          force: true
+          kubeconfig: ".config"
+          src: "deployment.yml"
+
+    - name: Expose to external
+      k8s_raw:
+          state: present
+          kubeconfig: ".config"
+          src: "service.yml"
