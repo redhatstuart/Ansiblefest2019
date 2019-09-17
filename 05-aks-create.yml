@@ -6,10 +6,6 @@
     - set_fact:
          dns_prefix: "aks{{ resource_group | hash('md5') | truncate(10, True, '') }}"
          aks_name: "aks{{ resource_group | hash('md5') | truncate(7, True, '') }}"
-    - name: Create resource group
-      azure_rm_resourcegroup:
-         name: "{{ resource_group }}"
-         location: "{{ location }}"
     - name: Create an AKS instance
       azure_rm_aks:
          name: "{{ aks_name }}"
@@ -33,16 +29,3 @@
       copy:
           content: "{{ aks.kube_config }}"
           dest: ".config"
-
-    - name: Deploy an image to AKS
-      k8s_raw:
-          state: present
-          force: true
-          kubeconfig: ".config"
-          src: "deployment.yml"
-
-    - name: Expose to external
-      k8s_raw:
-          state: present
-          kubeconfig: ".config"
-          src: "service.yml"

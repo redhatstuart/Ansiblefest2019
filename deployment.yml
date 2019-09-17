@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: hello
-        image: yuwzho/hello-docker
+        image: zikalino/helloworld
         imagePullPolicy: Always
   strategy:
     type: RollingUpdate
