@@ -5,19 +5,26 @@
   roles:
     - ./modules 
   tasks:
+
+    - name: Get cluster information
+      openshiftmanagedcluster_info:
+        resource_group: "{{ resource_group }}"
+        name: "{{ aro_cluster_name }}"
+      register: output
+
     - name: Deploy an image to ARO
       k8s_raw:
           state: present
           force: true
           src: "deployment-aro.yml"
-          host: https://openshift.46a0e43a9e5b4b80a523.eastus.azmosa.io
+          host: "https://{{ output.open_shift_managed_clusters.properties.publicHostname }}"
           api_key: "{{ aro_key }}"
 
     - name: Expose to external
       k8s_raw:
           state: present
           src: "service-aro.yml"
-          host: https://openshift.46a0e43a9e5b4b80a523.eastus.azmosa.io
+          host: "https://{{ output.open_shift_managed_clusters.properties.publicHostname }}"
           api_key: "{{ aro_key }}"
       register: output
 
