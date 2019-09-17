@@ -18,14 +18,14 @@
            
     - name: Build Image using Azure Container Registry
       azure_rm_resource:
-        api_version: '2018-09-01'
+        api_version: '2019-06-01-preview'
         resource_group: "{{ resource_group }}"
-        provider: containerregistry
+        provider: ContainerRegistry
         resource_type: registries
         resource_name: "{{ acr_name }}"
         subresource:
           - type: tasks
-            name: "buildtask"
+            name: "buildtaskyy"
         body:
           properties: 
             status: Enabled
@@ -37,9 +37,9 @@
             step: 
               type: Docker
               imageNames: 
-                - functionapp
+                - helloworld
               dockerFilePath: Dockerfile
-              contextPath: function-app-container
+              contextPath: helloworld
               isPushEnabled: true
               noCache: false
             trigger: 
@@ -47,7 +47,7 @@
                 - name: mySourceTrigger
                   sourceRepository: 
                     sourceControlType: Github
-                    repositoryUrl: https://github.com/{{ github_id }}/RedHatSummit2019
+                    repositoryUrl: https://github.com/zikalino/Ansiblefest2019
                     branch: master
                     sourceControlAuthProperties: 
                       tokenType: PAT
