@@ -25,7 +25,7 @@
         resource_name: "{{ acr_name }}"
         subresource:
           - type: tasks
-            name: "buildtaskyy"
+            name: "buildtask"
         body:
           properties: 
             status: Enabled
@@ -47,7 +47,7 @@
                 - name: mySourceTrigger
                   sourceRepository: 
                     sourceControlType: Github
-                    repositoryUrl: https://github.com/zikalino/Ansiblefest2019
+                    repositoryUrl: https://github.com/{{ github_id }}/Ansiblefest2019
                     branch: master
                     sourceControlAuthProperties: 
                       tokenType: PAT

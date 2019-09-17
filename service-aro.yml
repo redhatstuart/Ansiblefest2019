@@ -1,0 +1,18 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello
+  namespace: aaa
+  external: "true"
+  labels:
+    app: hello
+spec:
+  ports:
+  - name: tcp-80-8080-z4417
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: hello
+  type: LoadBalancer

@@ -9,10 +9,19 @@
       docker_login:
         username: "{{ docker_username }}"
         password: "{{ docker_password }}"
-    - name: Build and push Docker image
+
+    - name: Build and push Docker image for AKS
       docker_image:
         build:
           path: ./helloworld
         name: zikalino/helloworld
+        source: build
+        push: yes
+
+    - name: Build and push Docker image for ARO
+      docker_image:
+        build:
+          path: ./helloworld-aro
+        name: zikalino/helloworld-aro
         source: build
         push: yes

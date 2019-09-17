@@ -1,0 +1,28 @@
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: hello
+  namespace: aaa
+  labels:
+    app: hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      name: hello
+      labels:
+        app: hello
+    spec:
+      containers:
+      - name: hello
+        image: zikalino/helloworld-aro
+        imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
