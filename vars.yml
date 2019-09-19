@@ -1,5 +1,5 @@
 # Name of resource group to create for deployments
-resource_group: myrg
+resource_group: ansiblefestRG
 
 # Azure Data Center to use
 location: eastus
@@ -14,7 +14,6 @@ github_id: mygithubid
 github_token: mygithubtoken
 
 # Lab 4 
-
 aks_name: myaks
 dns_prefix: dnsprefix
 
