@@ -1,26 +1,30 @@
 # Name of resource group to create for deployments
-resource_group: ansiblefestRG
+resource_group:
 
 # Azure Data Center to use
-location: eastus
+location:
 
 # Lab 1
-docker_username: mydockerid
-docker_password: mygithubtoken
+docker_username:
+docker_password:
 
 # Lab 2
-acr_name: myacr
-github_id: mygithubid
-github_token: mygithubtoken
+acr_name:
+github_id:
+github_token:
 
-# Lab 4 
-aks_name: myaks
+# Lab 3
+aci_name:
+aci_container_name:
+
+# Lab 4
+aks_name: 
 dns_prefix: dnsprefix
 
 # Lab 6
-aro_cluster_name: 
+aro_cluster_name:
 clientId:
-secret: 
+secret:
 tenantId:
 
 # Lab 7

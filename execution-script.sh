@@ -10,26 +10,28 @@ az network nsg rule create -g ansibleatl --nsg-name ansibleatlNSG --name allow-s
 ############################## Provision Demo VM
 
 ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
-sudo su - root
 
-yum -y install epel-release deltarpm
-yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-devel python-devel libxslt-devel libffi-devel openssl-devel python2-pip iptables-services git
-sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
-semanage port -a -t ssh_port_t -p tcp 2112
-sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
-systemctl restart sshd
-systemctl stop firewalld 
-systemctl disable firewalld
-systemctl mask firewalld
-systemctl enable iptables
-systemctl start iptables
-wget https://wolverine.itscloudy.af/config/tuneazure.sh
-chmod 755 tuneazure.sh                      
-./tuneazure.sh
+sudo yum -y install epel-release deltarpm
+sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-devel python-devel libxslt-devel libffi-devel openssl-devel python2-pip iptables-services git docker podman
+sudo sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
+sudo semanage port -a -t ssh_port_t -p tcp 2112
+sudo sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
+sudo systemctl restart sshd
+sudo systemctl stop firewalld 
+sudo systemctl disable firewalld
+sudo systemctl mask firewalld
+sudo systemctl enable iptables
+sudo systemctl start iptables
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo chmod 666 /var/run/docker.sock
+sudo wget -P /root https://wolverine.itscloudy.af/config/tuneazure.sh
+sudo chmod 755 /root/tuneazure.sh                      
+sudo /root/tuneazure.sh
 
 ############################## Full Update
 
-yum -y update
+sudo yum -y update
 
 ############################## Reboot host if you wish
 
@@ -43,12 +45,10 @@ az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --s
 ##################################################################################################################### Install Ansible Bits
 
 ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
-sudo su - root
 
-pip install --upgrade pip
-pip install ansible==2.8.5
-pip install ansible[azure]
-exit
+sudo pip install --upgrade pip
+sudo pip install ansible==2.8.5 docker
+sudo pip install ansible[azure]
 
 ############################## Provision Ansible account
 
