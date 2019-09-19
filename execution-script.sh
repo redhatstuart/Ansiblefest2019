@@ -46,7 +46,7 @@ ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
 sudo su - root
 
 pip install --upgrade pip
-pip install ansible==2.9.0b1
+pip install ansible==2.8.5
 pip install ansible[azure]
 exit
 
