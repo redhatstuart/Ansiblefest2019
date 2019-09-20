@@ -111,8 +111,10 @@ time ansible-playbook 07-create-aro.yml
 
 sed -i "s/REPLACE/`grep docker_username vars.yml | awk '{ print $2 }'`/g" deployment-aro.yml
 oc login https://openshift.ABC.azmosa.io --token=ABC
-oc new-project Ansiblefest2019
+oc new-project ansiblefest2019
+# Insert Token into vars.yml
 
+# ~5sec
 time ansible-playbook 08-aro-deploy.yml
 watch oc get svc
 
