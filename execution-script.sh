@@ -25,7 +25,9 @@ sudo systemctl disable firewalld
 sudo systemctl mask firewalld
 sudo systemctl enable iptables
 sudo systemctl start iptables
+sudo chmod 755 /etc/rc.local
 sudo systemctl enable rc-local
+sudo systemctl start rc-local
 sudo wget -P /root https://wolverine.itscloudy.af/config/tuneazure.sh
 sudo chmod 755 /root/tuneazure.sh                      
 sudo /root/tuneazure.sh
@@ -77,8 +79,13 @@ vi $HOME/.bashrc
 
 source $HOME/.bashrc
 
+# ~5s
 time ansible-playbook 00-prereqisites.yml
+
+# ~1m
 time ansible-playbook 01-build-and-push-to-dockerhub.yml
+
+# ~10s
 time ansible-playbook 02-build-acr-image.yml
 
 # Force webhook rebuild by a github commit

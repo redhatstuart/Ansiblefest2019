@@ -10,15 +10,7 @@
         username: "{{ docker_username }}"
         password: "{{ docker_password }}"
 
-#    - name: Build and push Docker image for AKS
-#      docker_image:
-#        build:
-#          path: ./helloworld
-#        name: "{{ docker_username }}/helloworld"
-#        source: build
-#        push: yes
-
-    - name: Build and push Docker image for ARO
+    - name: Build and push Docker image for ARO into Docker Hub
       docker_image:
         build:
           path: ./helloworld-aro
