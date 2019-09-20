@@ -90,7 +90,7 @@ time ansible-playbook 01-build-and-push-to-dockerhub.yml
 # ~10sec
 time ansible-playbook 02-build-acr-image.yml
 
-# Force webhook rebuild by a github commit
+# Wait for initial build task in ACR to succeed
 
 # ~40sec
 time ansible-playbook 03-create-container-instance.yml

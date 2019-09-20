@@ -1,7 +1,7 @@
-Ansiblefest 2019 - Atlanta
 # Ansiblefest2019
-Ansiblefest 2019 Content
-stkirk & zikalino
-Testing
-testing123
-testtest
+<h1>Welcome to Ansiblefest 2019!</h1>
+
+<strong>Take control of containers in the public cloud with Ansible</strong>
+
+<img src="images/atlanta.jpg">
+

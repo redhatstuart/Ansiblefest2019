@@ -1,6 +1,6 @@
 - hosts: localhost
   vars_files:
-    - ./vars-myvars.yml
+    - ./vars.yml
   tasks:
 
     - name: Deploying AKS Application
