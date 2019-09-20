@@ -14,10 +14,9 @@ github_id: stuartatmicrosoft
 github_token: 3BLAHedcde95feaa4b533f4c391ce9a69a247011487c
 
 # Lab 6
-aro_cluster_name:
-clientId:
-secret:
-tenantId:
+aro_client_id: e430bd2c-f5c2-431d-a80d-9462c318d076
+aro_secret: 5JU11GT*wg@0sp/k?9+YZG@oAykZhSno
+aro_tenant_id: 2cbfe652-c273-4b77-a487-b323ddaa02fd
 
 # Lab 7
 aro_key:

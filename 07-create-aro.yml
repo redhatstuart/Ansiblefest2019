@@ -1,11 +1,17 @@
----
-- hosts: localhost
+ name: Deploy Azure Red Hat OpenShift Cluster
+  hosts: localhost
   vars_files:
     - ./vars-myvars.yml
   roles:
-    - ./modules 
+    - ./modules
+
   tasks:
-    - name: Create/Update OpenShift Managed Cluster
+
+    - name: Randomize ARO resource names
+      set_fact:
+         aro_cluster_name: "aro{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+
+    - name: Create Azure Red Hat OpenShift Cluster
       openshiftmanagedcluster:
         resource_group: "{{ resource_group }}"
         name: "{{ aro_cluster_name }}"
@@ -45,4 +51,8 @@
       register: output
 
     - debug:
-        msg: "https://{{ output.properties.publicHostname }}"
+        msg: "Your public hostname is:  https://{{ output.properties.publicHostname }}"
+
+    - debug:
+        msg: "The REPLY_URI to add to AAD is:  https://{{ output.properties.publicHostname }}/oauth2callback/Azure%20AD"
+
