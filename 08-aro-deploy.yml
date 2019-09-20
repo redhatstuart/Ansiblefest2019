@@ -5,10 +5,14 @@
     - ./modules
   tasks:
 
+    - name: Randomize ARO resource names
+      set_fact:
+         aro_cluster_name: "aro-{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+
     - name: Get cluster information
       openshiftmanagedcluster_info:
-        resource_group: "aro-aafe82b56d"
-        name: "aro-aafe82b56d"
+        resource_group: "{{ aro_cluster_name }}"
+        name: "{{ aro_cluster_name }}"
       register: output
 
     - name: Deploy an image to ARO
@@ -30,4 +34,5 @@
 
     - debug:
         msg: "The ARO application is being created.  Keep an eye on the output of 'oc get svc' until you notice an IP address has been assigned to the load balancer. When it has, attempt to connect to it."
+
 
