@@ -31,6 +31,8 @@ sudo systemctl start rc-local
 sudo wget -P /root https://wolverine.itscloudy.af/config/tuneazure.sh
 sudo chmod 755 /root/tuneazure.sh                      
 sudo /root/tuneazure.sh
+sudo wget -P /root https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
+sudo find /root -maxdepth 1 -name '*.tar.gz' -exec sudo tar -xvzf '{}' -C /usr/bin --strip=1 \;
 
 ############################## Full Update
 
