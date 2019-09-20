@@ -34,7 +34,7 @@
           os_type: Linux
         agent_pool_profiles:
           - name: infra
-            count: 2
+            count: 3
             vm_size: Standard_D4s_v3
             subnet_cidr: 10.0.0.0/24
             os_type: Linux
