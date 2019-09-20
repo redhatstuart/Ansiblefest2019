@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: Deploy Azure Container Instance and pull container image from ACR
+  hosts: localhost
   vars_files:
     - ./vars-myvars.yml
 

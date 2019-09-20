@@ -1,4 +1,4 @@
- name: Deploy Azure Red Hat OpenShift Cluster
+- name: Deploy Azure Red Hat OpenShift Cluster
   hosts: localhost
   vars_files:
     - ./vars-myvars.yml
