@@ -22,10 +22,6 @@ admin_username: stkirk
 aks_name: stkirk-aks
 dns_prefix: stkirk-aks
 
-# Lab 5
-vm_name: cosmosvm
-
-
 # Lab 6
 aro_cluster_name:
 clientId:
