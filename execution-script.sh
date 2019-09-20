@@ -79,17 +79,18 @@ vi $HOME/.bashrc
 
 source $HOME/.bashrc
 
-# ~5s
+# ~5sec
 time ansible-playbook 00-prereqisites.yml
 
-# ~1m
+# ~1min
 time ansible-playbook 01-build-and-push-to-dockerhub.yml
 
-# ~10s
+# ~10sec
 time ansible-playbook 02-build-acr-image.yml
 
 # Force webhook rebuild by a github commit
 
+# ~40sec
 time ansible-playbook 03-create-container-instance.yml
 
 # ~9 min
