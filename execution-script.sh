@@ -12,7 +12,7 @@ az network nsg rule create -g ansibleatl --nsg-name ansibleatlNSG --name allow-s
 ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
 
 sudo yum -y install epel-release deltarpm
-sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-devel python-devel libxslt-devel libffi-devel openssl-devel python2-pip iptables-services git docker podman
+sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-devel python-devel libxslt-devel libffi-devel openssl-devel python2-pip iptables-services git docker podman kubernetes-client
 sudo sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
 sudo semanage port -a -t ssh_port_t -p tcp 2112
 sudo sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
@@ -85,6 +85,9 @@ time ansible-playbook 02-build-acr-image.yml
 # Force webhook rebuild
 
 time ansible-playbook 03-create-container-instance.yml
+time ansible-playbook 04-aks-create.yml
+time ansible-playbook 05-cosmosdb-deploy.yml
+
 
 ############################## Generate random number and set variables
 #
