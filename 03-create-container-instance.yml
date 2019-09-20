@@ -17,6 +17,7 @@
         name: "{{ aci_name }}"
         os_type: linux
         ip_address: public
+        force_update: yes
         registry_login_server: "{{ acr_output.registries[0].login_server }}"
         registry_username: "{{ acr_output.registries[0].name }}"
         registry_password: "{{ acr_output.registries[0].credentials.password }}"
