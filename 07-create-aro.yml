@@ -11,7 +11,6 @@
       set_fact:
          aro_cluster_name: "aro{{ resource_group | hash('md5') | truncate(10, True, '') }}"
 
-
     - name: Create Resource Group for Azure Red Hat OpenShift
       azure_rm_resourcegroup:
         name: "{{ aro_cluster_name }}"
