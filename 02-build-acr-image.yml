@@ -6,7 +6,7 @@
 
   tasks:
 
-    - name: Create a new Azure Container Registry if one doesn't exist
+    - name: Create a new Azure Container Registry
       azure_rm_containerregistry:
         name: "{{ acr_name }}"
         resource_group: "{{ resource_group }}"
@@ -15,8 +15,8 @@
         tags:
             Release: Initial
             Environment: Ansiblefest2019
-
-    - name: Create webhook to Github and enable auto build of container image using ACR
+           
+    - name: Build container image using Azure Container Registry
       azure_rm_resource:
         api_version: '2019-06-01-preview'
         resource_group: "{{ resource_group }}"
@@ -27,35 +27,34 @@
           - type: tasks
             name: "buildtask"
         body:
-          properties:
+          properties: 
             status: Enabled
-            platform:
+            platform: 
               os: Linux
               architecture: amd64
-            agentConfiguration:
+            agentConfiguration: 
               cpu: 2
-            step:
+            step: 
               type: Docker
-              imageNames:
+              imageNames: 
                 - helloworld
               dockerFilePath: Dockerfile
               contextPath: helloworld
               isPushEnabled: true
               noCache: false
-            trigger:
-              sourceTriggers:
+            trigger: 
+              sourceTriggers: 
                 - name: mySourceTrigger
-                  sourceRepository:
+                  sourceRepository: 
                     sourceControlType: Github
-                    repositoryUrl: "https://github.com/{{ github_id }}/Ansiblefest2019"
+                    repositoryUrl: https://github.com/{{ github_id }}/Ansiblefest2019
                     branch: master
-                    sourceControlAuthProperties:
+                    sourceControlAuthProperties: 
                       tokenType: PAT
                       token:  "{{ github_token }}"
-                  sourceTriggerEvents:
+                  sourceTriggerEvents: 
                     - commit
-              baseImageTrigger:
+              baseImageTrigger: 
                 name: myBaseImageTrigger
                 baseImageTriggerType: Runtime
           location: "{{ location }}"
-

@@ -30,4 +30,3 @@
 
     - debug:
         msg: "Visit your deployed ACI at: {{ output.ip_address }}"
-

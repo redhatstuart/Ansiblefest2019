@@ -1,4 +1,4 @@
-- name: Execute Lab Prerequisites
+- name: Prerequisites
   hosts: localhost
   connection: local
   vars_files:
@@ -9,4 +9,3 @@
       azure_rm_resourcegroup:
         name: "{{ resource_group }}"
         location: "{{ location }}"
-

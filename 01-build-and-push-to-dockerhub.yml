@@ -1,16 +1,16 @@
-- name: Build Containers for AKS and ARO and push to Docker Hub
+- name: Create a Docker container with function app
   hosts: localhost
   connection: local
   vars_files:
    - ./vars-myvars.yml
 
   tasks:
-    - name: Log into Docker Hub
+    - name: Log into DockerHub
       docker_login:
         username: "{{ docker_username }}"
         password: "{{ docker_password }}"
 
-    - name: Build and Push Docker Container for AKS Demo
+    - name: Build and push Docker image for AKS
       docker_image:
         build:
           path: ./helloworld
@@ -18,10 +18,11 @@
         source: build
         push: yes
 
-    - name: Build and Push Docker Container for ARO Demo
+    - name: Build and push Docker image for ARO
       docker_image:
         build:
           path: ./helloworld-aro
-        name: "{{ docker_username }}/helloworld-aro"
+        name: "{{ docker_username }}/helloworld-aro1"
         source: build
         push: yes
+

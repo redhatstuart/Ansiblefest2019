@@ -1,11 +1,14 @@
 ---
 - hosts: localhost
   vars_files:
-    - vars.yml
+    - ./vars-myvars.yml
   tasks:
-    - set_fact:
+   
+    - name: Randomize AKS resource names
+      set_fact:
          dns_prefix: "aks{{ resource_group | hash('md5') | truncate(10, True, '') }}"
          aks_name: "aks{{ resource_group | hash('md5') | truncate(7, True, '') }}"
+
     - name: Create an AKS instance
       azure_rm_aks:
          name: "{{ aks_name }}"
@@ -17,15 +20,21 @@
              client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
              client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
          linux_profile:
-             admin_username: azureuser
-             ssh_key: "{{ ssh_key }}"
+             admin_username:  "{{ admin_username }}"
+             ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
          agent_pool_profiles:
              - name: default
                count: 1
                vm_size: Standard_DS1_v2
       register: aks
 
-    - name: Save kubeconfig
+    - name: Verify .kube directory exists
+      file: 
+        path: "~/.kube"
+        state: "directory"
+        mode: "0755"
+
+    - name: Save kubectl configuration file
       copy:
-          content: "{{ aks.kube_config }}"
-          dest: ".config"
+        content: "{{ aks.kube_config }}"
+        dest: "~/.kube/config"
