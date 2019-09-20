@@ -16,6 +16,7 @@ sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-
 sudo sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
 sudo semanage port -a -t ssh_port_t -p tcp 2112
 sudo sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
+echo "sleep 20" | sudo tee -a /etc/rc.local
 echo "chmod 666 /var/run/docker.sock" | sudo tee -a /etc/rc.local
 sudo systemctl start docker
 sudo systemctl enable docker
@@ -94,6 +95,7 @@ time ansible-playbook 02-build-acr-image.yml
 
 # ~40sec
 time ansible-playbook 03-create-container-instance.yml
+# Make a commit to github to force another update from webhook
 
 # ~9 min
 time ansible-playbook 04-aks-create.yml
@@ -109,6 +111,8 @@ time ansible-playbook 06-aks-deploy.yml
 time ansible-playbook 07-create-aro.yml
 # watch az openshift list
 
+
+
 sed -i "s/REPLACE/`grep docker_username vars.yml | awk '{ print $2 }'`/g" deployment-aro.yml
 oc login https://openshift.ABC.azmosa.io --token=ABC
 oc new-project ansiblefest2019
@@ -123,3 +127,6 @@ az group delete -n ansibleatl -y
 az group delete -n ansiblefestrg -y
 az ad sp delete --id http://Ansiblefest2019-Azure
 sed -i "/ansibleatl/d" ~/.ssh/known_hosts
+
+
+
