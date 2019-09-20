@@ -1,0 +1,24 @@
+# Name of resource group to create for deployments
+resource_group: ansiblefestRG
+
+# Azure Data Center to use
+location: eastus
+
+# Lab 1
+docker_username: stuartatmicrosoft
+docker_password: qjbrme3r
+
+# Lab 2
+acr_name: stkirkACRnew
+github_id: stuartatmicrosoft
+github_token: 3BLAHedcde95feaa4b533f4c391ce9a69a247011487c
+
+# Lab 6
+aro_cluster_name:
+clientId:
+secret:
+tenantId:
+
+# Lab 7
+aro_key:
+

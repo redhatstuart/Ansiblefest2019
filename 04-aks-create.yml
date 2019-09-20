@@ -1,0 +1,49 @@
+- name: Deploy AKS Infrastructure to support Hero Voting App
+  hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars-myvars.yml
+  roles:
+    - ../modules
+
+  tasks:
+
+    - name: Randomize AKS resource names
+      set_fact:
+         dns_prefix: "aks{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+         aks_name: "aks{{ resource_group | hash('md5') | truncate(7, True, '') }}"
+
+    - name: Create a managed Azure Container Services (AKS) instance to support Hero Voting App
+      azure_rm_aks:
+        name: "{{ aks_name }}"
+        resource_group: "{{ resource_group }}"
+        kubernetes_version: "1.13.10"
+        dns_prefix: "{{ dns_prefix }}"
+        linux_profile:
+          admin_username:  "aksadmin"
+          ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        service_principal:
+          client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') }}"
+          client_secret: "{{ lookup('env', 'AZURE_SECRET') }}"
+        agent_pool_profiles:
+          - name: default
+            count: 2
+            vm_size: Standard_D2_v2
+        tags:
+          Environment: Ansiblefest2019
+      register: aks_output
+
+    - debug:
+        msg: "The name of your AKS cluster is: {{ aks_output.name }}"
+
+    - name: Verify .kube directory exists
+      file:
+        path: "~/.kube"
+        state: "directory"
+        mode: "0755"
+
+    - name: Save kubectl configuration file
+      copy:
+        content: "{{ aks_output.kube_config }}"
+        dest: "~/.kube/config"
+

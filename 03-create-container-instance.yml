@@ -1,0 +1,38 @@
+- hosts: localhost
+  vars_files:
+    - ./vars-myvars.yml
+
+  tasks:
+
+    - name: Randomize ACI resource names
+      set_fact:
+         aci_name: "aci{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+         aci_container_name: "aci_container{{ resource_group | hash('md5') | truncate(7, True, '') }}"
+
+    - name: Getting login & credential information for Azure Container Registry
+      azure_rm_containerregistry_facts:
+        resource_group: "{{ resource_group }}"
+        name: "{{ acr_name }}"
+        retrieve_credentials: yes
+      register: acr_output
+
+    - name: Create an Azure Container Instance (ACI)
+      azure_rm_containerinstance:
+        resource_group: "{{ resource_group }}"
+        name: "{{ aci_name }}"
+        os_type: linux
+        ip_address: public
+        force_update: yes
+        registry_login_server: "{{ acr_output.registries[0].login_server }}"
+        registry_username: "{{ acr_output.registries[0].name }}"
+        registry_password: "{{ acr_output.registries[0].credentials.password }}"
+        containers:
+          - name: "{{ aci_container_name }}"
+            image: "{{ acr_output.registries[0].login_server }}/helloworld:latest"
+            memory: 1.5
+            ports:
+              - 80
+      register: output
+
+    - debug:
+        msg: "Visit your deployed ACI at: {{ output.ip_address }}"

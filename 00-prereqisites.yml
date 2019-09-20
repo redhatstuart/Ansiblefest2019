@@ -2,7 +2,7 @@
   hosts: localhost
   connection: local
   vars_files:
-   - vars.yml
+   - ./vars-myvars.yml
 
   tasks:
     - name: Create Resource Group
