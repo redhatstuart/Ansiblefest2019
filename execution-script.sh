@@ -16,6 +16,7 @@ sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-
 sudo sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
 sudo semanage port -a -t ssh_port_t -p tcp 2112
 sudo sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
+echo "chmod 666 /var/run/docker.sock" | sudo tee -a /etc/rc.local
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo systemctl restart sshd
@@ -24,6 +25,7 @@ sudo systemctl disable firewalld
 sudo systemctl mask firewalld
 sudo systemctl enable iptables
 sudo systemctl start iptables
+sudo systemctl enable rc-local
 sudo wget -P /root https://wolverine.itscloudy.af/config/tuneazure.sh
 sudo chmod 755 /root/tuneazure.sh                      
 sudo /root/tuneazure.sh
@@ -48,6 +50,7 @@ ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
 sudo pip install --upgrade pip
 sudo pip install ansible==2.8.5
 sudo pip install ansible[azure]
+sudo pip install docker
 sudo pip install --ignore-installed kubernetes
 sudo pip install openshift
 
@@ -67,6 +70,13 @@ vi $HOME/.bashrc
 ############################## Source .bashrc to set new variables
 
 source $HOME/.bashrc
+
+
+
+
+
+
+time ansible-playbook 00-prereqisites.yml
 
 ############################## Generate random number and set variables
 #
