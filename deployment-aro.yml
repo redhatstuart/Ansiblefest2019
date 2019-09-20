@@ -3,7 +3,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: hello
-  namespace: aaa
+  namespace: ansiblefest2019
   labels:
     app: hello
 spec:
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: hello
-        image: zikalino/helloworld-aro
+        image: REPLACE/helloworld-aro
         imagePullPolicy: Always
   strategy:
     type: RollingUpdate

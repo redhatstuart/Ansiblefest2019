@@ -1,18 +1,15 @@
 - hosts: localhost
   vars_files:
-    - ./vars.yml
+    - ./vars-myvars.yml
   roles:
     - ./modules
   tasks:
 
     - name: Get cluster information
       openshiftmanagedcluster_info:
-        resource_group: "aroaafe82b56d"
-        name: "aroaafe82b56d"
+        resource_group: "aro-aafe82b56d"
+        name: "aro-aafe82b56d"
       register: output
-
-    - debug:
-        var: output
 
     - name: Deploy an image to ARO
       k8s_raw:
@@ -23,9 +20,6 @@
           api_key: "{{ aro_key }}"
       register: output2
 
-    - debug:
-        var: output2
-
     - name: Expose to external
       k8s_raw:
           state: present
@@ -35,8 +29,5 @@
       register: output3
 
     - debug:
-        var: output3
-
-    - debug:
-          msg: "http://{{ output.result.status.loadBalancer.ingress[0].ip }}"
+        msg: "The ARO application is being created.  Keep an eye on the output of 'oc get svc' until you notice an IP address has been assigned to the load balancer. When it has, attempt to connect to it."
 

@@ -9,7 +9,7 @@
 
     - name: Randomize ARO resource names
       set_fact:
-         aro_cluster_name: "aro{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+         aro_cluster_name: "aro-{{ resource_group | hash('md5') | truncate(10, True, '') }}"
 
     - name: Create Resource Group for Azure Red Hat OpenShift
       azure_rm_resourcegroup:
@@ -54,6 +54,13 @@
                 secret: "{{ aro_secret }}"
                 tenantId: "{{ aro_tenant_id }}"
       register: output
+
+    - name: Inserting cluster resource group name into Playbook #8
+      replace:
+      path: 08-aro-deploy.yml
+      regexp: "REPLACE"
+      replace: "{{ aro_cluster_name }}"
+      backup: no
 
     - debug:
         msg: "Your Azure Red Hat Openshift Cluster is named: {{ output.name }}"

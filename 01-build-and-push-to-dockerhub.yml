@@ -14,7 +14,7 @@
       docker_image:
         build:
           path: ./helloworld-aro
-        name: "{{ docker_username }}/helloworld-aro1"
+        name: "{{ docker_username }}/helloworld-aro"
         source: build
         push: yes
 
