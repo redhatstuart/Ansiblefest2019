@@ -77,51 +77,27 @@ vi $HOME/.bashrc
 
 source $HOME/.bashrc
 
-
 time ansible-playbook 00-prereqisites.yml
 time ansible-playbook 01-build-and-push-to-dockerhub.yml
 time ansible-playbook 02-build-acr-image.yml
 
-# Force webhook rebuild
+# Force webhook rebuild by a github commit
 
 time ansible-playbook 03-create-container-instance.yml
+
+# ~9 min
 time ansible-playbook 04-aks-create.yml
+
+# ~8 min
 time ansible-playbook 05-cosmosdb-deploy.yml
 
+# ~5 sec
+time ansible-playbook 06-aks-deploy.yml
+# watch kubectl get service
 
-############################## Generate random number and set variables
-#
-#cd $HOME/Ansiblefest2018
-#
-#RANDNUM=`shuf -i 20000-50000 -n 1`
-#sed -i "s/mmmysqlansiblefestxxxx/mmmysqlansiblefest$RANDNUM/g" vars.yml
-#sed -i "s/mmvmpublicipxx/mmvmpublicip$RANDNUM/g" vars.yml
-#sed -i "s/vmsspublicipxxy/vmsspublicip$RANDNUM/g" vars.yml
-#sed -i "s/appgwpublicipxx/appgwpublicip$RANDNUM/g" vars.yml
-#
-############################### Run Playbooks 0-3
-#
-#ansible-playbook 00-prerequisites.yml --extra-vars "@vars.yml"
-#ansible-playbook 01-mm-vm-deploy.yml --extra-vars "@vars.yml"
-#ansible-playbook 02-create-mysql.yml --extra-vars "@vars.yml"
-#ansible-playbook 03-mm-setup.yml --extra-vars "@vars.yml"
-#
-############################### Test Mattermost App
-#
-#echo It will take a minute for the server to start
-#echo View in web browser - visit http://ip.address.of.mm.server:8065
-#
-############################### Run Playbooks 4-6
-#
-#ansible-playbook 04-create-vm-image.yml --extra-vars "@vars.yml"
-#ansible-playbook 05-vmss-create.yml --extra-vars "@vars.yml"
-#ansible-playbook 06-appgateway-attach.yml --extra-vars "@vars.yml"
-#
-############################### Test Mattermost App
-#
-#echo It will take roughly 4 min 30 sec for the server to start
-#echo View in web browser - visit http://ip.address.of.ag
-#
+
+
+
 ############################### RESET
 az group delete -n ansibleatl -y
 az group delete -n ansiblefestrg -y

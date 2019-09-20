@@ -1,23 +1,12 @@
----
 - hosts: localhost
   vars_files:
     - ./vars-myvars.yml
   tasks:
 
-    - name: Deploy an image to AKS
-      k8s_raw:
-          state: present
-          force: true
-          kubeconfig: "~/.kube/config"
-          src: "aks-k8s-hero-voting-deploy.yml"
-      register: output
-
-    #- name: Expose to external
-      #k8s_raw:
-          #state: present
-          #kubeconfig: "~/.kube/config"
-          #src: "service.yml"
-      #register: output
+    - name: Deploying AKS Application
+      command: "/usr/bin/kubectl apply -f ./aks-k8s-hero-voting-deploy.yml"
+      ignore_errors: yes
 
     - debug:
-        var: output
+        msg: "The AKS application is being created.  Keep an eye on the output of 'kubectl get service' until you notice an IP address has been assigned to the load balancer. When it has, attempt to connect to it on port 8080."
+

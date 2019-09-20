@@ -4,6 +4,11 @@
 
   tasks:
 
+    - name: Randomize ACI resource names
+      set_fact:
+         aci_name: "aci{{ resource_group | hash('md5') | truncate(10, True, '') }}"
+         aci_container_name: "aci_container{{ resource_group | hash('md5') | truncate(7, True, '') }}"
+
     - name: Getting login & credential information for Azure Container Registry
       azure_rm_containerregistry_facts:
         resource_group: "{{ resource_group }}"

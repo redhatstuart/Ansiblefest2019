@@ -38,11 +38,5 @@
     - name: Setting K8S Secret with kubectl
       command: "/usr/bin/kubectl create secret generic heroes-cosmosdb-secret --from-literal=cosmosUri={{ constr }}"
       ignore_errors: yes
-#
-#    - name: Deploying AKS Application
-#      command: "/usr/bin/kubectl apply -f ./aks-k8s-hero-voting-deploy.yml"
-#      ignore_errors: yes
-#
-#    - debug:
-#        msg: "The AKS application is being created.  Keep an eye on the output of 'kubectl get service' until you notice an IP address has been assigned to the load balancer. When it has, attempt to connect to it on port 8080."
+
 
