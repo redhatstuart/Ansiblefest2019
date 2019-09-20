@@ -55,8 +55,10 @@ sudo pip install --ignore-installed kubernetes
 sudo pip install openshift
 
 sudo mkdir /etc/ansible
+echo "[defaults]" | sudo tee -a /etc/ansible/ansible.cfg
 echo "system_warnings = False" | sudo tee -a /etc/ansible/ansible.cfg
 echo "deprecation_warnings = False" | sudo tee -a /etc/ansible/ansible.cfg
+echo "command_warnings = False" | sudo tee -a /etc/ansible/ansible.cfg
 
 ############################## Provision Ansible account
 
