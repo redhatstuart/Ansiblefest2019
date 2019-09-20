@@ -1,4 +1,4 @@
-- name: Prerequisites
+- name: Create Resource Group for Initial Labs
   hosts: localhost
   connection: local
   vars_files:
