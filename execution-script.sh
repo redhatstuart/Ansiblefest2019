@@ -54,6 +54,10 @@ sudo pip install docker
 sudo pip install --ignore-installed kubernetes
 sudo pip install openshift
 
+sudo mkdir /etc/ansible
+echo "system_warnings = False" | sudo tee -a /etc/ansible/ansible.cfg
+echo "deprecation_warnings = False" | sudo tee -a /etc/ansible/ansible.cfg
+
 ############################## Provision Ansible account
 
 git clone https://github.com/stuartatmicrosoft/Ansiblefest2019
@@ -72,11 +76,13 @@ vi $HOME/.bashrc
 source $HOME/.bashrc
 
 
-
-
-
-
 time ansible-playbook 00-prereqisites.yml
+time ansible-playbook 01-build-and-push-to-dockerhub.yml
+time ansible-playbook 02-build-acr-image.yml
+
+# Force webhook rebuild
+
+time ansible-playbook 03-create-container-instance.yml
 
 ############################## Generate random number and set variables
 #
