@@ -1,16 +1,18 @@
----
 - hosts: localhost
   vars_files:
     - ./vars-myvars.yml
   roles:
-    - ./modules 
+    - ./modules
   tasks:
 
     - name: Get cluster information
       openshiftmanagedcluster_info:
-        resource_group: "{{ resource_group }}"
-        name: "{{ aro_cluster_name }}"
+        resource_group: "aroaafe82b56d"
+        name: "aroaafe82b56d"
       register: output
+
+    - debug:
+        var: output
 
     - name: Deploy an image to ARO
       k8s_raw:
@@ -19,6 +21,10 @@
           src: "deployment-aro.yml"
           host: "https://{{ output.open_shift_managed_clusters.properties.publicHostname }}"
           api_key: "{{ aro_key }}"
+      register: output2
+
+    - debug:
+        var: output2
 
     - name: Expose to external
       k8s_raw:
@@ -26,7 +32,11 @@
           src: "service-aro.yml"
           host: "https://{{ output.open_shift_managed_clusters.properties.publicHostname }}"
           api_key: "{{ aro_key }}"
-      register: output
+      register: output3
+
+    - debug:
+        var: output3
 
     - debug:
           msg: "http://{{ output.result.status.loadBalancer.ingress[0].ip }}"
+
