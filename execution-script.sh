@@ -34,26 +34,11 @@ sudo chmod 755 /root/tuneazure.sh
 sudo /root/tuneazure.sh
 sudo wget -P /root https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
 sudo find /root -maxdepth 1 -name '*.tar.gz' -exec sudo tar -xvzf '{}' -C /usr/bin --strip=1 \;
+
+################ Setup Ansible Environment
+
 sudo pip install --upgrade pip
 sudo pip install ansible==2.8.5
-
-############################## Full Update
-
-sudo yum -y update
-
-############################## Reboot host if you wish
-
-sudo reboot 
-
-############################## Create SP for Ansible
-
-az account list
-az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
-
-##################################################################################################################### Install Ansible Bits
-
-ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
-
 
 sudo pip install ansible[azure]
 sudo pip install docker
@@ -82,6 +67,22 @@ vi $HOME/.bashrc
 ############################## Source .bashrc to set new variables
 
 source $HOME/.bashrc
+############################## Full Update
+
+sudo yum -y update
+
+############################## Reboot host if you wish
+
+sudo reboot 
+
+############################## Create SP for Ansible
+
+az account list
+az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
+
+##################################################################################################################### Install Ansible Bits
+
+ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
 
 # ~5sec
 time ansible-playbook 00-prereqisites.yml
