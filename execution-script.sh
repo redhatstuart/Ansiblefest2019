@@ -16,7 +16,7 @@ sudo yum -y install policycoreutils-python libsemanage-devel gcc gcc-c++ kernel-
 sudo sed -i "s/dport 22/dport 2112/g" /etc/sysconfig/iptables
 sudo semanage port -a -t ssh_port_t -p tcp 2112
 sudo sed -i "s/#Port 22/Port 2112/g" /etc/ssh/sshd_config
-echo "sleep 20" | sudo tee -a /etc/rc.local
+echo "sleep 50" | sudo tee -a /etc/rc.local
 echo "chmod 666 /var/run/docker.sock" | sudo tee -a /etc/rc.local
 sudo systemctl start docker
 sudo systemctl enable docker
@@ -39,18 +39,10 @@ sudo find /root -maxdepth 1 -name '*.tar.gz' -exec sudo tar -xvzf '{}' -C /usr/b
 
 sudo yum -y update
 
-############################## Reboot host if you wish
-
-sudo reboot 
-
 ############################## Create SP for Ansible
 
 az account list
 az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
-
-##################################################################################################################### Install Ansible Bits
-
-ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
 
 sudo pip install --upgrade pip
 sudo pip install ansible==2.8.5
@@ -74,13 +66,24 @@ echo "export AZURE_SECRET=" >> $HOME/.bashrc
 echo "export AZURE_SUBSCRIPTION_ID=" >> $HOME/.bashrc
 echo "export AZURE_TENANT=" >> $HOME/.bashrc
 
+############################## Create SP for Ansible using AZ CLI
+
+az account list
+az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
+
 ############################## Populate Credentials File
 
 vi $HOME/.bashrc
 
-############################## Source .bashrc to set new variables
+############################## Reboot host if you wish
 
-source $HOME/.bashrc
+sudo reboot
+
+############################# START PRESENTATION
+
+ssh -p 2112 ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
+
+cd $HOME/Ansiblefest2019
 
 # ~5sec
 time ansible-playbook 00-prereqisites.yml
@@ -111,8 +114,6 @@ time ansible-playbook 06-aks-deploy.yml
 time ansible-playbook 07-create-aro.yml
 # watch az openshift list
 
-
-
 sed -i "s/REPLACE/`grep docker_username vars.yml | awk '{ print $2 }'`/g" deployment-aro.yml
 oc login https://openshift.ABC.azmosa.io --token=ABC
 oc new-project ansiblefest2019
@@ -128,5 +129,10 @@ az group delete -n ansiblefestrg -y
 az ad sp delete --id http://Ansiblefest2019-Azure
 sed -i "/ansibleatl/d" ~/.ssh/known_hosts
 
+# ******************************************************************************************************
+# ******** THIS WILL DELETE ALL OF YOUR ARO CLUSTERS IN YOUR ACCOUNT - YOU PROBABLY DONT WANT TO DO THIS
+# ******************************************************************************************************
 
+sleep 10
+for i in `az openshift list -o json |jq -r '.[].name'`; do az group delete -n $i -y; done
 
