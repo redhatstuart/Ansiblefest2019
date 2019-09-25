@@ -35,7 +35,6 @@ sudo /root/tuneazure.sh
 sudo wget -P /root https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
 sudo find /root -maxdepth 1 -name '*.tar.gz' -exec sudo tar -xvzf '{}' -C /usr/bin --strip=1 \;
 
-<<<<<<< HEAD
 ############################## Full Update
 
 sudo yum -y update
@@ -44,9 +43,8 @@ sudo yum -y update
 
 az account list
 az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
-=======
+
 ################ Setup Ansible Environment
->>>>>>> 872cb6b2762f119ac24dcce13eac3801cecd04c5
 
 sudo pip install --upgrade pip
 sudo pip install ansible==2.8.5
