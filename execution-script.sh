@@ -69,11 +69,6 @@ echo "export AZURE_SECRET=" >> $HOME/.bashrc
 echo "export AZURE_SUBSCRIPTION_ID=" >> $HOME/.bashrc
 echo "export AZURE_TENANT=" >> $HOME/.bashrc
 
-############################## Create SP for Ansible using AZ CLI
-
-az account list
-az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
-
 ############################## Populate Credentials File
 
 vi $HOME/.bashrc
@@ -82,31 +77,10 @@ vi $HOME/.bashrc
 
 sudo reboot
 
-<<<<<<< HEAD
 ############################# START PRESENTATION
 
 ssh -p 2112 ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
-
 cd $HOME/Ansiblefest2019
-=======
-source $HOME/.bashrc
-############################## Full Update
-
-sudo yum -y update
-
-############################## Reboot host if you wish
-
-sudo reboot 
-
-############################## Create SP for Ansible
-
-az account list
-az ad sp create-for-rbac --name="Ansiblefest2019-Azure" --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID_FROM_PREVIOUS_COMMAND"
-
-##################################################################################################################### Install Ansible Bits
-
-ssh ansibleatl@YOUR.IP.ADDRESS.OF.AZURE.VM
->>>>>>> 872cb6b2762f119ac24dcce13eac3801cecd04c5
 
 # ~5sec
 time ansible-playbook 00-prereqisites.yml
