@@ -131,5 +131,5 @@ sed -i "/ansibleatl/d" ~/.ssh/known_hosts
 # ******************************************************************************************************
 
 sleep 10
-for i in `az openshift list -o json |jq -r '.[].name'`; do az group delete -n $i -y; done
+for i in `az openshift list -o json |jq -r '.[].resourceGroup'`; do az group delete -n $i -y; done
 
